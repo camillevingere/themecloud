@@ -5,18 +5,18 @@ import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
-import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
-import frLocale from "date-fns/locale/fr";
 import BasicDatePicker from "./BasicDatePicker";
+import { airports } from "../util/airports";
 
 class DateForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      depart: "CDG",
-      arrivee: "LHR",
+      depart: airports[0].name,
+      arrivee: airports[1].name,
       selectedDate: new Date(),
     };
   }
@@ -39,9 +39,9 @@ class DateForm extends Component {
               }}
               defaultValue={this.state.depart}
             >
-              <MenuItem value="CDG">Paris</MenuItem>
-              <MenuItem value="LHR">Londres</MenuItem>
-              <MenuItem value="SFO">San Francisco</MenuItem>
+              {airports.map((airport) => (
+                <MenuItem value={airport.name}>{airport.city}</MenuItem>
+              ))}
             </Select>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -55,9 +55,9 @@ class DateForm extends Component {
               }}
               defaultValue={this.state.arrivee}
             >
-              <MenuItem value="CDG">Paris</MenuItem>
-              <MenuItem value="LHR">Londres</MenuItem>
-              <MenuItem value="SFO">San Francisco</MenuItem>
+              {airports.map((airport) => (
+                <MenuItem value={airport.name}>{airport.city}</MenuItem>
+              ))}
             </Select>
           </Grid>
           <Grid item xs={12}>
