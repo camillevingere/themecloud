@@ -11,17 +11,15 @@ import BasicDatePicker from "./BasicDatePicker";
 import { airports } from "../util/airports";
 
 class DateForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      depart: airports[0].name,
-      arrivee: airports[1].name,
-      selectedDate: new Date(),
-    };
-  }
-
   render() {
+    const {
+      departure,
+      arrival,
+      selectedDate,
+      setSelectedDate,
+      setDeparture,
+      setArrival,
+    } = this.props;
     return (
       <Fragment>
         <Typography variant="h6" gutterBottom>
@@ -34,10 +32,8 @@ class DateForm extends Component {
               labelId="label"
               id="select"
               fullWidth
-              onChange={(event) => {
-                this.setState({ depart: event.target.value });
-              }}
-              defaultValue={this.state.depart}
+              onChange={(e) => setDeparture(e.target.value)}
+              defaultValue={departure}
             >
               {airports.map((airport) => (
                 <MenuItem value={airport.name}>{airport.city}</MenuItem>
@@ -50,10 +46,8 @@ class DateForm extends Component {
               labelId="label"
               id="select"
               fullWidth
-              onChange={(event) => {
-                this.setState({ arrivee: event.target.value });
-              }}
-              defaultValue={this.state.arrivee}
+              onChange={(e) => setArrival(e.target.value)}
+              defaultValue={arrival}
             >
               {airports.map((airport) => (
                 <MenuItem value={airport.name}>{airport.city}</MenuItem>
@@ -63,7 +57,10 @@ class DateForm extends Component {
           <Grid item xs={12}>
             <InputLabel id="label">Date du voyage</InputLabel>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <BasicDatePicker />
+              <BasicDatePicker
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+              />
             </MuiPickersUtilsProvider>
           </Grid>
         </Grid>

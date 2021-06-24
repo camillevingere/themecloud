@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import AppBar from "@material-ui/core/AppBar";
@@ -12,6 +12,7 @@ import Link from "@material-ui/core/Link";
 import Typography from "@material-ui/core/Typography";
 import DateForm from "./DateForm";
 import Flight from "./Flight";
+import { airports } from "../util/airports";
 
 function Copyright() {
   return (
@@ -65,12 +66,35 @@ const useStyles = makeStyles((theme) => ({
 
 const steps = ["Choisir une date", "Choisir le vol", "Voyager !"];
 
-function getStepContent(step) {
+function getStepContent(
+  step,
+  departure,
+  setDeparture,
+  arrival,
+  setArrival,
+  selectedDate,
+  setSelectedDate
+) {
   switch (step) {
     case 0:
-      return <DateForm />;
+      return (
+        <DateForm
+          setDeparture={setDeparture}
+          setArrival={setArrival}
+          setSelectedDate={setSelectedDate}
+          departure={departure}
+          arrival={arrival}
+          selectedDate={selectedDate}
+        />
+      );
     case 1:
-      return <Flight />;
+      return (
+        <Flight
+          departure={departure}
+          arrival={arrival}
+          selectedDate={selectedDate}
+        />
+      );
     case 2:
       return null;
     default:
@@ -81,6 +105,9 @@ function getStepContent(step) {
 export default function Checkout() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
+  const [departure, setDeparture] = React.useState(airports[0].name);
+  const [arrival, setArrival] = React.useState(airports[1].name);
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -89,7 +116,6 @@ export default function Checkout() {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
-
   return (
     <React.Fragment>
       <CssBaseline />
@@ -113,7 +139,7 @@ export default function Checkout() {
             ))}
           </Stepper>
           <React.Fragment>
-            {activeStep === steps.length ? (
+            {activeStep === steps.length - 1 ? (
               <React.Fragment>
                 <Typography variant="h5" gutterBottom>
                   Merci pour votre commande.
@@ -126,7 +152,15 @@ export default function Checkout() {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {getStepContent(activeStep)}
+                {getStepContent(
+                  activeStep,
+                  departure,
+                  setDeparture,
+                  arrival,
+                  setArrival,
+                  selectedDate,
+                  setSelectedDate
+                )}
                 <div className={classes.buttons}>
                   {activeStep !== 0 && (
                     <Button onClick={handleBack} className={classes.button}>

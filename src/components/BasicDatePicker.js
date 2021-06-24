@@ -2,13 +2,13 @@ import React, { Fragment, useState } from "react";
 import { DatePicker } from "@material-ui/pickers";
 
 function BasicDatePicker(props) {
-  const [selectedDate, handleDateChange] = useState(new Date());
+  const { selectedDate, setSelectedDate } = props;
 
   return (
     <Fragment>
       <DatePicker
         value={selectedDate}
-        onChange={handleDateChange}
+        onChange={(e) => setSelectedDate(e.target.value)}
         animateYearScrolling
       />
     </Fragment>
